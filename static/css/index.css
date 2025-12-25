@@ -1,0 +1,27 @@
+body { background-color: #f8f9fa; font-family: sans-serif; }
+.header-custom { background: #2E7D32; color: white; padding: 15px 0; position: sticky; top: 0; z-index: 1000; }
+.hero-banner {
+    background: url('https://source.unsplash.com/800x400/?cliff,mountain') no-repeat center/cover;
+    height: 350px; display: flex; align-items: center; justify-content: center; position: relative;
+}
+.hero-banner::after { content: ""; position: absolute; inset: 0; background: rgba(0,0,0,0.4); }
+.hero-content { position: relative; z-index: 1; }
+
+/* NAVIGASI (Logic) */
+.nav-custom {
+    background: white; box-shadow: 0 0 10px rgba(0,0,0,0.2); border-radius: 20px; padding: 10px; display: flex; transition: transform 0.5s ease; z-index: 9999;
+}
+.nav-custom a { text-decoration: none; color: gray; display: flex; flex-direction: column; align-items: center; padding: 5px 15px; font-size: 0.8rem; }
+.nav-custom a.active { color: #2E7D32; font-weight: bold; }
+.nav-custom a i { font-size: 1.3rem; margin-bottom: 2px; }
+
+@media (max-width: 768px) {
+    .nav-custom { position: fixed; bottom: 20px; left: 20px; right: 20px; justify-content: space-around; }
+    .nav-hide { transform: translateY(150%); }
+}
+@media (min-width: 769px) {
+    .nav-custom { position: fixed; top: 50%; right: 20px; transform: translateY(-50%); flex-direction: column; gap: 15px; }
+    .nav-hide { transform: translate(150%, -50%); }
+    .nav-custom a span { display: none; }
+    .nav-custom a:hover span { display: block; }
+}

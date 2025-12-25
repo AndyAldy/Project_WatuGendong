@@ -1,0 +1,103 @@
+/* --- TEMA HALAMAN GALERI (Nuansa Segar/Tosca) --- */
+body {
+    background-color: #e0f2f1; /* Hijau muda pucat */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* HEADER KHUSUS GALERI */
+.header-custom {
+    background: #00695c; /* Teal Gelap */
+    color: white;
+    padding: 15px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+/* EFEK KARTU FOTO */
+.photo-card {
+    transition: transform 0.3s ease;
+    overflow: hidden;
+    border-radius: 15px !important;
+}
+
+.photo-card:hover {
+    transform: scale(1.05); /* Zoom saat di-hover */
+    z-index: 10;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2) !important;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* --- LOGIKA NAVIGASI (HARUS ADA DI SINI JUGA) --- */
+.nav-custom {
+    background: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    border-radius: 20px;
+    padding: 10px;
+    display: flex;
+    transition: transform 0.5s ease;
+    z-index: 9999;
+}
+
+.nav-custom a {
+    text-decoration: none;
+    color: gray;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5px 15px;
+    font-size: 0.8rem;
+}
+
+/* Warna Active Menu Galeri */
+.nav-custom a.active {
+    color: #00695c; /* Teal */
+    font-weight: bold;
+    background-color: #b2dfdb;
+    border-radius: 10px;
+}
+
+.nav-custom a i {
+    font-size: 1.3rem;
+    margin-bottom: 2px;
+}
+
+/* RESPONSIVE HP */
+@media (max-width: 768px) {
+    .nav-custom {
+        position: fixed;
+        bottom: 20px;
+        left: 20px;
+        right: 20px;
+        justify-content: space-around;
+    }
+    .nav-hide {
+        transform: translateY(150%);
+    }
+}
+
+/* RESPONSIVE LAPTOP */
+@media (min-width: 769px) {
+    .nav-custom {
+        position: fixed;
+        top: 50%;
+        right: 20px;
+        transform: translateY(-50%);
+        flex-direction: column;
+        gap: 15px;
+    }
+    .nav-hide {
+        transform: translate(150%, -50%);
+    }
+    .nav-custom a span {
+        display: none;
+    }
+    .nav-custom a:hover span {
+        display: block;
+    }
+}
