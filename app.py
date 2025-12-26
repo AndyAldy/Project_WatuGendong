@@ -124,7 +124,7 @@ def reservasi():
             pass
     return render_template('reservasi.html')
 
-@app.route('/login', methods=['GET', 'POST'])
+@app.route('/dukuh', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
