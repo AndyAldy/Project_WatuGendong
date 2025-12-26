@@ -9,9 +9,13 @@ body { font-family: 'Poppins', sans-serif; background-color: #fff; }
 /* HERO */
 .masthead {
     height: 100vh;
-    background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://source.unsplash.com/1600x900/?sunset,mountain');
-    background-size: cover; background-position: center;
-    display: flex; align-items: center; justify-content: center;
+    /* Ganti gambar background jadi nuansa tebing/batu (Cliff/Mountain) */
+    background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('https://source.unsplash.com/1600x900/?cliff,stone,mountain');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .divider { width: 50px; border: 2px solid #f4623a; margin: 20px auto; opacity: 1; }
 .btn-primary { background-color: #f4623a; border: none; }

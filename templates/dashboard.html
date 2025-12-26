@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard Admin</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    
+    <nav class="navbar navbar-dark bg-dark px-4">
+        <span class="navbar-brand">Admin Panel Watu Gendong</span>
+        <a href="/logout" class="btn btn-danger btn-sm">Logout</a>
+    </nav>
+
+    <div class="container my-5">
+        
+        <div class="card shadow mb-5">
+            <div class="card-header bg-success text-white">Upload Foto Galeri</div>
+            <div class="card-body">
+                <form action="/tambah_foto" method="POST" enctype="multipart/form-data" class="row g-3">
+                    <div class="col-md-5">
+                        <input type="text" name="judul" class="form-control" placeholder="Judul Foto (Misal: Sunset)" required>
+                    </div>
+                    <div class="col-md-5">
+                        <input type="file" name="gambar" class="form-control" required>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-primary w-100">Upload</button>
+                    </div>
+                </form>
+                
+                <hr>
+                <h6>Daftar Foto:</h6>
+                <div class="row">
+                    {% for foto in galeri %}
+                    <div class="col-2 text-center mb-3">
+                        <img src="{{ url_for('static', filename='uploads/' + foto.gambar) }}" class="img-thumbnail" style="height:80px">
+                        <div class="d-grid mt-1">
+                            <a href="/hapus/galeri/{{ foto.id }}" class="btn btn-danger btn-sm" onclick="return confirm('Hapus?')">Hapus</a>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow mb-5">
+            <div class="card-header bg-primary text-white">Tulis Artikel / Berita</div>
+            <div class="card-body">
+                <form action="/tambah_artikel" method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <input type="text" name="judul" class="form-control" placeholder="Judul Artikel" required>
+                    </div>
+                    <div class="mb-3">
+                        <textarea name="isi" class="form-control" rows="4" placeholder="Isi Artikel..." required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label>Gambar Header (Opsional)</label>
+                        <input type="file" name="gambar" class="form-control">
+                    </div>
+                    <button class="btn btn-primary">Posting Artikel</button>
+                </form>
+
+                <table class="table mt-4">
+                    <thead><tr><th>Judul</th><th>Aksi</th></tr></thead>
+                    <tbody>
+                        {% for art in artikel %}
+                        <tr>
+                            <td>{{ art.judul }}</td>
+                            <td><a href="/hapus/artikel/{{ art.id }}" class="text-danger">Hapus</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card shadow">
+            <div class="card-header bg-warning">Data Booking Masuk</div>
+            <div class="card-body">
+                <table class="table table-striped">
+                    <thead><tr><th>Nama</th><th>HP</th><th>Tanggal</th><th>Pesan</th><th>Hapus</th></tr></thead>
+                    <tbody>
+                        {% for res in reservasi %}
+                        <tr>
+                            <td>{{ res.nama }}</td>
+                            <td>{{ res.no_hp }}</td>
+                            <td>{{ res.tanggal }}</td>
+                            <td>{{ res.pesan }}</td>
+                            <td><a href="/hapus/reservasi/{{ res.id }}" class="text-danger">X</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

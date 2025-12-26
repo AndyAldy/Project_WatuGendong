@@ -21,30 +21,36 @@
         </div>
     </header>
 
-    <div class="container my-5">
-        <div class="row align-items-center mb-5">
-            <div class="col-md-6">
-                <img src="https://source.unsplash.com/600x400/?ancient,rock" class="img-fluid rounded-4 shadow" alt="Sejarah">
-            </div>
-            <div class="col-md-6 mt-4 mt-md-0">
-                <span class="badge bg-warning text-dark mb-2">Folklore</span>
-                <h2 class="fw-bold">Jejak Sunan Kalijaga</h2>
-                <p class="text-muted">Konon, batu-batu raksasa ini tertinggal saat digendong oleh Sunan Kalijaga untuk membangun Masjid Demak. Karena waktu subuh telah tiba, batu-batu ini ditinggalkan begitu saja di bukit ini.</p>
+<div class="container my-5">
+    <h2 class="fw-bold mb-4 text-center">Cerita & Berita Terbaru</h2>
+    
+    <div class="row">
+        {% for item in data %}
+        <div class="col-md-12 mb-5">
+            <div class="card border-0 shadow rounded-4 overflow-hidden">
+                <div class="row g-0">
+                    {% if item.gambar %}
+                    <div class="col-md-4">
+                        <img src="{{ url_for('static', filename='uploads/' + item.gambar) }}" class="img-fluid h-100" style="object-fit: cover; min-height: 200px;">
+                    </div>
+                    {% endif %}
+                    <div class="col-md-8">
+                        <div class="card-body p-4">
+                            <small class="text-muted">{{ item.tanggal }}</small>
+                            <h3 class="card-title fw-bold mt-2">{{ item.judul }}</h3>
+                            <p class="card-text">{{ item.isi }}</p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <div class="row align-items-center flex-md-row-reverse">
-            <div class="col-md-6">
-                <img src="https://source.unsplash.com/600x400/?volcano,stone" class="img-fluid rounded-4 shadow" alt="Geologi">
-            </div>
-            <div class="col-md-6 mt-4 mt-md-0 text-md-end">
-                <span class="badge bg-primary mb-2">Geopark</span>
-                <h2 class="fw-bold">Warisan Gunung Api Purba</h2>
-                <p class="text-muted">Secara ilmiah, situs ini adalah singkapan batuan beku vulkanik dari jutaan tahun lalu. Formasi unik ini terbentuk akibat erosi panjang pada gunung api purba dasar laut.</p>
-            </div>
-        </div>
-        <div style="height: 100px;"></div>
+        {% else %}
+        <p class="text-center">Belum ada artikel.</p>
+        {% endfor %}
     </div>
+    
+    <div style="height: 100px;"></div>
+</div>
 
     <div id="floatingMenu" class="floating-nav">
         <a href="/"><i class="fas fa-home"></i>Home</a>
