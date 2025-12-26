@@ -88,7 +88,7 @@ def sejarah():
 def detail_artikel(id):
     # Cari artikel berdasarkan ID yang diklik
     data_artikel = Artikel.query.get_or_404(id)
-    return render_template('detail_artikel.html', item=data_artikel)
+    return render_template('detail_sejarah.html', item=data_artikel)
 
 @app.route('/galeri')
 def galeri():
