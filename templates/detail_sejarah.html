@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <title>{{ item.judul }} - Watu Gendong</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sejarah.css') }}">
+</head>
+<body class="bg-light">
+
+    <nav class="navbar fixed-top navbar-expand-lg" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-white" href="/">
+                <i class="fas fa-arrow-left"></i> KEMBALI
+            </a>
+        </div>
+    </nav>
+
+    <header class="header-image" style="height: 50vh; background-image: url('{{ url_for('static/', filename='uploads/' + item.gambar) if item.gambar else 'https://source.unsplash.com/1600x900/?nature' }}');">
+        <div class="overlay-dark w-100 h-100 d-flex align-items-center justify-content-center">
+            <h1 class="display-4 fw-bold text-white text-center px-3">{{ item.judul }}</h1>
+        </div>
+    </header>
+
+    <div class="container my-5" style="max-width: 800px;">
+        <div class="card border-0 shadow-lg rounded-4 p-5">
+            <div class="text-muted mb-4 text-center">
+                <i class="far fa-calendar-alt"></i> Diposting pada: {{ item.tanggal }}
+            </div>
+            
+            <div class="article-content" style="line-height: 1.8; font-size: 1.1rem; text-align: justify;">
+                {% for paragraf in item.isi.split('\n') %}
+                    <p>{{ paragraf }}</p>
+                {% endfor %}
+            </div>
+
+            <div class="text-center mt-5">
+                <a href="/sejarah" class="btn btn-secondary rounded-pill px-4">Kembali ke Daftar Cerita</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="floatingMenu" class="floating-nav">
+        <a href="/"><i class="fas fa-home"></i>Home</a>
+        <a href="/sejarah" class="active"><i class="fas fa-history"></i>Story</a>
+        <a href="/galeri"><i class="fas fa-camera"></i>Gallery</a>
+        <a href="/reservasi"><i class="fas fa-ticket-alt"></i>Booking</a>
+    </div>
+
+</body>
+</html>

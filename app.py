@@ -84,6 +84,11 @@ def sejarah():
     except:
         semua_artikel = []
     return render_template('sejarah.html', data=semua_artikel)
+@app.route('/artikel/<int:id>')
+def detail_artikel(id):
+    # Cari artikel berdasarkan ID yang diklik
+    data_artikel = Artikel.query.get_or_404(id)
+    return render_template('detail_artikel.html', item=data_artikel)
 
 @app.route('/galeri')
 def galeri():
