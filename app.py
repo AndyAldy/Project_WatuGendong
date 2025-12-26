@@ -106,7 +106,7 @@ def reservasi():
             return "Gagal menyimpan data"
     return render_template('reservasi.html')
 
-@app.route('/admin', methods=['GET', 'POST'])
+@app.route('/dukuh', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
