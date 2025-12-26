@@ -183,6 +183,57 @@ def tambah_artikel():
     db.session.commit()
     return redirect(url_for('dashboard'))
 
+# --- ROUTE EDIT DATA ---
+
+@app.route('/edit/artikel/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_artikel(id):
+    item = Artikel.query.get_or_404(id) # Ambil data atau error 404 jika tidak ada
+    
+    if request.method == 'POST':
+        item.judul = request.form['judul']
+        item.isi = request.form['isi']
+        
+        # Cek apakah admin upload gambar baru?
+        if 'gambar' in request.files:
+            file = request.files['gambar']
+            if file.filename != '':
+                filename = secure_filename(file.filename)
+                
+                # (Opsional) Hapus gambar lama agar hemat memori
+                # try: os.remove(os.path.join(app.config['UPLOAD_FOLDER'], item.gambar))
+                # except: pass
+                
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                item.gambar = filename # Update nama file di database
+        
+        db.session.commit()
+        flash('Artikel berhasil diperbarui!')
+        return redirect(url_for('dashboard'))
+        
+    return render_template('edit_artikel.html', item=item)
+
+@app.route('/edit/galeri/<int:id>', methods=['GET', 'POST'])
+@login_required
+def edit_galeri(id):
+    item = Galeri.query.get_or_404(id)
+    
+    if request.method == 'POST':
+        item.judul = request.form['judul']
+        
+        if 'gambar' in request.files:
+            file = request.files['gambar']
+            if file.filename != '':
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                item.gambar = filename
+        
+        db.session.commit()
+        flash('Foto Galeri berhasil diperbarui!')
+        return redirect(url_for('dashboard'))
+        
+    return render_template('edit_galeri.html', item=item)
+
 @app.route('/hapus/<tipe>/<int:id>')
 @login_required
 def hapus(tipe, id):

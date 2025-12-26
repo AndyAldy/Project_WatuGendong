@@ -32,9 +32,10 @@
                 <h6>Daftar Foto:</h6>
                 <div class="row">
                     {% for foto in galeri %}
-                    <div class="col-2 text-center mb-3">
-                        <img src="{{ url_for('static', filename='uploads/' + foto.gambar) }}" class="img-thumbnail" style="height:80px">
-                        <div class="d-grid mt-1">
+                    <div class="col-md-2 col-4 text-center mb-3">
+                        <img src="{{ url_for('static', filename='uploads/' + foto.gambar) }}" class="img-thumbnail" style="height:80px; width: 100%; object-fit: cover;">
+                        <div class="d-grid gap-1 mt-1">
+                            <a href="/edit/galeri/{{ foto.id }}" class="btn btn-warning btn-sm">Edit</a>
                             <a href="/hapus/galeri/{{ foto.id }}" class="btn btn-danger btn-sm" onclick="return confirm('Hapus?')">Hapus</a>
                         </div>
                     </div>
@@ -60,17 +61,20 @@
                     <button class="btn btn-primary">Posting Artikel</button>
                 </form>
 
-                <table class="table mt-4">
-                    <thead><tr><th>Judul</th><th>Aksi</th></tr></thead>
-                    <tbody>
-                        {% for art in artikel %}
-                        <tr>
-                            <td>{{ art.judul }}</td>
-                            <td><a href="/hapus/artikel/{{ art.id }}" class="text-danger">Hapus</a></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+            <table class="table mt-4">
+                <thead><tr><th>Judul</th><th>Aksi</th></tr></thead>
+                <tbody>
+                    {% for art in artikel %}
+                    <tr>
+                        <td>{{ art.judul }}</td>
+                        <td>
+                            <a href="/edit/artikel/{{ art.id }}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="/hapus/artikel/{{ art.id }}" class="btn btn-danger btn-sm text-white" onclick="return confirm('Hapus?')">Hapus</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
             </div>
         </div>
 
