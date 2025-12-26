@@ -11,13 +11,13 @@
 
     <nav class="navbar fixed-top navbar-expand-lg" id="mainNav">
         <div class="container">
-            <a class="navbar-brand fw-bold text-white" href="/">
+            <a class="navbar-brand fw-bold text-white" href="/sejarah">
                 <i class="fas fa-arrow-left"></i> KEMBALI
             </a>
         </div>
     </nav>
 
-    <header class="header-image" style="height: 50vh; background-image: url('{{ url_for('static/', filename='uploads/' + item.gambar) if item.gambar else 'https://source.unsplash.com/1600x900/?nature' }}');">
+    <header id="header-hero" class="header-image">
         <div class="overlay-dark w-100 h-100 d-flex align-items-center justify-content-center">
             <h1 class="display-4 fw-bold text-white text-center px-3">{{ item.judul }}</h1>
         </div>

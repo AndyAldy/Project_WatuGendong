@@ -5,31 +5,41 @@ from flask_login import LoginManager, UserMixin, login_user, login_required, log
 from werkzeug.utils import secure_filename
 from datetime import datetime
 
+# HAPUS/COMMENT BAGIAN INI AGAR TIDAK ERROR DI LAPTOP
+# import pymysql 
+# pymysql.install_as_MySQLdb()
+
 app = Flask(__name__)
 app.secret_key = 'kuncirahasiabanget'
 
-# --- KONFIGURASI VERCEL ---
-# Mengambil URL Database otomatis dari Environment Variable Vercel
+# --- KONFIGURASI DATABASE PINTAR ---
+# 1. Coba cari database Vercel
 db_url = os.environ.get("POSTGRES_URL") 
 
-# Fix khusus untuk Vercel Postgres (ubah postgres:// jadi postgresql://)
+# 2. Fix bug kecil untuk Vercel (ubah postgres:// jadi postgresql://)
 if db_url and db_url.startswith("postgres://"):
     db_url = db_url.replace("postgres://", "postgresql://", 1)
 
-# Jika tidak ada database (di lokal), pakai SQLite sementara
+# 3. LOGIKA OTOMATIS:
+# Jika ada db_url (artinya di Vercel), pakai itu.
+# Jika TIDAK ada (artinya di Laptop), pakai 'sqlite:///database.db'
 app.config['SQLALCHEMY_DATABASE_URI'] = db_url or 'sqlite:///database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-# Folder Upload (Catatan: Di Vercel file ini bersifat sementara/akan hilang)
-UPLOAD_FOLDER = '/tmp' # Gunakan folder tmp di Vercel agar tidak error permission
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+# Folder Upload (Gunakan /tmp untuk Vercel, atau static/uploads untuk lokal)
+if os.environ.get("VERCEL"):
+    app.config['UPLOAD_FOLDER'] = '/tmp'
+else:
+    # Kalau di laptop, simpan di folder static/uploads biar awet
+    app.config['UPLOAD_FOLDER'] = 'static/uploads'
+    os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
-# --- MODEL DATABASE (Sama seperti sebelumnya) ---
+# --- MODEL DATABASE ---
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
@@ -55,9 +65,10 @@ class Artikel(db.Model):
     gambar = db.Column(db.String(200))
     tanggal = db.Column(db.Date, default=datetime.now)
 
-# Setup Database & Admin
+# Setup Database Otomatis
 with app.app_context():
     db.create_all()
+    # Buat admin jika belum ada
     if not User.query.filter_by(username='admin').first():
         admin_baru = User(username='admin', password='123')
         db.session.add(admin_baru)
@@ -67,7 +78,7 @@ with app.app_context():
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-# --- ROUTES (Sama seperti sebelumnya, sedikit penyesuaian di Upload) ---
+# --- ROUTES ---
 
 @app.route('/')
 def index():
@@ -84,10 +95,12 @@ def sejarah():
     except:
         semua_artikel = []
     return render_template('sejarah.html', data=semua_artikel)
+
+# ROUTE BARU: Detail Artikel (Yang tadi kita bahas)
 @app.route('/artikel/<int:id>')
 def detail_artikel(id):
-    # Cari artikel berdasarkan ID yang diklik
     data_artikel = Artikel.query.get_or_404(id)
+    # Pastikan nama file ini sesuai dengan yang ada di folder templates Anda
     return render_template('detail_sejarah.html', item=data_artikel)
 
 @app.route('/galeri')
@@ -108,10 +121,10 @@ def reservasi():
             db.session.commit()
             return redirect(url_for('reservasi', sukses=1))
         except:
-            return "Gagal menyimpan data"
+            pass
     return render_template('reservasi.html')
 
-@app.route('/dukuh', methods=['GET', 'POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
         username = request.form['username']
@@ -145,9 +158,10 @@ def tambah_foto():
         file = request.files['gambar']
         if file.filename != '':
             filename = secure_filename(file.filename)
-            # Di Vercel kita simpan ke DB saja namanya, gambarnya tidak bisa permanen di folder
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            
             judul = request.form['judul']
-            baru = Galeri(judul=judul, gambar=filename) # Hanya simpan nama
+            baru = Galeri(judul=judul, gambar=filename)
             db.session.add(baru)
             db.session.commit()
     return redirect(url_for('dashboard'))
@@ -162,6 +176,7 @@ def tambah_artikel():
         file = request.files['gambar']
         if file.filename != '':
             filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
             
     baru = Artikel(judul=judul, isi=isi, gambar=filename)
     db.session.add(baru)
@@ -182,3 +197,6 @@ def hapus(tipe, id):
         db.session.delete(item)
     db.session.commit()
     return redirect(url_for('dashboard'))
+
+if __name__ == '__main__':
+    app.run(debug=True)
