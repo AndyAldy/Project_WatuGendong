@@ -78,26 +78,6 @@
             </div>
         </div>
 
-        <div class="card shadow">
-            <div class="card-header bg-warning">Data Booking Masuk</div>
-            <div class="card-body">
-                <table class="table table-striped">
-                    <thead><tr><th>Nama</th><th>HP</th><th>Tanggal</th><th>Pesan</th><th>Hapus</th></tr></thead>
-                    <tbody>
-                        {% for res in reservasi %}
-                        <tr>
-                            <td>{{ res.nama }}</td>
-                            <td>{{ res.no_hp }}</td>
-                            <td>{{ res.tanggal }}</td>
-                            <td>{{ res.pesan }}</td>
-                            <td><a href="/hapus/reservasi/{{ res.id }}" class="text-danger">Hapus</a></td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
     </div>
 </body>
 </html>
